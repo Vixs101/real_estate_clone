@@ -1,30 +1,54 @@
-import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Home from "./pages/Home";
-import ForgotPassword from "./pages/ForgotPassword";
-import Offers from "./pages/Offers";
-import Profile from "./pages/Profile";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import Header from "./components/Header";
+import React, { createContext, useContext } from "react";
 
-function App() {
+
+// create a context for the app
+const AuthContext = createContext({
+  user: {
+    username: "@Eli",
+    name: "Elijah Victor",
+    email: "elijahvix695@gmail.com",
+  },
+});
+
+// define a context provider
+function AuthProvider(props) {
+  return (
+    <AuthContext.Provider
+      value={{
+        user: {
+          username: "@Eli",
+          name: "Elijah Victor",
+          email: "elijahvix695@gmail.com",
+        },
+      }}
+    >
+      {props.children}
+    </AuthContext.Provider>
+  );
+}
+
+// define user profile component
+function UserProfile() {
+  const {user} = useContext(AuthContext);
+
+  console.log(user)
   return (
     <>
-      <Router>
-        <Header />
-
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/" element={<ForgotPassword />} />
-          <Route path="/" element={<Offers />} />
-          <Route path="/" element={<Profile />} />
-          <Route path="/" element={<SignIn />} />
-          <Route path="/" element={<SignUp />} />
-        </Routes>
-      </Router>
-      
+      <h1>User Profile</h1>
+      <div>UserName : @Eli</div>
+      <div> Name : Elijah Victor</div>
+      <div> Email : elijahvix695@gmail.com</div>
     </>
   );
 }
 
-export default App;
+// root component
+export default function App() {
+  return (
+    <AuthProvider>
+      <section className="main-container">
+        <UserProfile />
+      </section>
+    </AuthProvider>
+  );
+}
